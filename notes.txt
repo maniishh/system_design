@@ -1,0 +1,35 @@
+# WHAT IS LLD ?
+
+LLD focuses on:
+Classes
+Objects
+Methods
+Relationships between them
+
+What LLD includes
+>>OOP Concepts:
+Encapsulation
+Inheritance
+Polymorphism
+Abstraction
+
+>>Design Patterns:
+Singleton
+Factory
+Observer
+
+>>UML diagrams (sometimes)
+
+# WHAT IS HLD ?
+
+HLD focuses on:
+System components
+How they interact
+Scalability
+
+>>IN HLD 
+Users upload photos → API server
+Stored in → Database + Storage (S3 type)
+Feed generated → Feed service
+Cached → Redis
+Load handled → Load balancer
