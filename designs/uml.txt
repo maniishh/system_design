@@ -1,0 +1,161 @@
+                              ┌───────────────────────────────┐
+                              │          ParkingLot           │
+                              ├───────────────────────────────┤
+                              │ - floors : List<Floor>        │
+                              │ - pricingStrategy             │
+                              │ - paymentStrategy              │
+                              ├───────────────────────────────┤
+                              │ + parkVehicle(vehicle)        │
+                              │ + exitVehicle(ticketId)       │
+                              │ + findSpot(vehicle)           │
+                              └───────────────┬───────────────┘
+                                              │
+                                              │ contains 1..*
+                                              ▼
+                              ┌───────────────────────────────┐
+                              │        ParkingFloor            │
+                              ├───────────────────────────────┤
+                              │ - floorNumber                 │
+                              │ - spots : List<ParkingSpot>   │
+                              ├───────────────────────────────┤
+                              │ + findAvailableSpot(vehicle)  │
+                              └───────────────┬───────────────┘
+                                              │
+                                              │ contains 1..*
+                                              ▼
+                              ┌───────────────────────────────┐
+                              │       <<abstract>>             │
+                              │         ParkingSpot            │
+                              ├───────────────────────────────┤
+                              │ - spotId                      │
+                              │ - vehicle                     │
+                              ├───────────────────────────────┤
+                              │ + isFree()                    │
+                              │ + park(vehicle)               │
+                              │ + removeVehicle()             │
+                              │ + canFit(vehicle)             │
+                              └───────────────┬───────────────┘
+                                              ▲
+                         ┌────────────────────┼────────────────────┐
+                         │                    │                    │
+                ┌────────┴────────┐  ┌────────┴────────┐  ┌────────┴────────┐
+                │    BikeSpot     │  │     CarSpot     │  │    TruckSpot    │
+                ├─────────────────┤  ├─────────────────┤  ├─────────────────┤
+                │ + canFit()      │  │ + canFit()      │  │ + canFit()      │
+                └─────────────────┘  └─────────────────┘  └─────────────────┘
+
+
+         ┌──────────────────────────────┐
+         │           Vehicle            │
+         ├──────────────────────────────┤
+         │ - licensePlate               │
+         │ - type                       │
+         └──────────────┬───────────────┘
+                        ▲
+             ┌──────────┼──────────┐
+             │          │          │
+        ┌────┴────┐ ┌───┴────┐ ┌───┴─────┐
+        │  Bike   │ │  Car   │ │  Truck   │
+        └─────────┘ └────────┘ └──────────┘
+
+
+                     ┌────────────────────────────┐
+                     │           Ticket            │
+                     ├────────────────────────────┤
+                     │ - ticketId                 │
+                     │ - vehicle                  │
+                     │ - parkingSpot              │
+                     │ - entryTime                 │
+                     │ - exitTime                  │
+                     ├────────────────────────────┤
+                     │ + calculateDuration()      │
+                     └──────────┬───────┬─────────┘
+                                │       │
+                              has      has
+                                │       │
+                                ▼       ▼
+                             Vehicle  ParkingSpot
+
+
+
+          ┌──────────────────────────────────────────────┐
+          │             <<interface>>                    │
+          │              PricingStrategy                 │
+          ├──────────────────────────────────────────────┤
+          │ + calculateFee(ticket) : double              │
+          └──────────────────────┬───────────────────────┘
+                                 ▲
+                    ┌────────────┼─────────────┐
+                    │            │             │
+              ┌─────┴─────┐ ┌────┴──────┐ ┌───┴────────┐
+              │  Normal   │ │  Weekend  │ │  Premium   │
+              │  Pricing  │ │  Pricing  │ │  Pricing   │
+              └───────────┘ └───────────┘ └────────────┘
+
+
+          ┌──────────────────────────────────────────────┐
+          │             <<interface>>                    │
+          │              PaymentStrategy                  │
+          ├──────────────────────────────────────────────┤
+          │ + pay(amount) : boolean                      │
+          └──────────────────────┬───────────────────────┘
+                                 ▲
+                    ┌────────────┼─────────────┐
+                    │            │             │
+              ┌─────┴─────┐ ┌────┴──────┐ ┌───┴────────┐
+              │   Cash    │ │   Card    │ │    UPI     │
+              │  Payment  │ │  Payment  │ │  Payment   │
+              └───────────┘ └───────────┘ └────────────┘
+
+
+              ENTRY
+
+Vehicle
+   ↓
+ParkingLot
+   ↓
+Find Spot
+   ↓
+Park Vehicle
+   ↓
+Generate Ticket
+
+
+EXIT
+
+Ticket
+   ↓
+Find Vehicle/Spot
+   ↓
+Calculate Duration
+   ↓
+PricingStrategy
+   ↓
+Calculate Fee
+   ↓
+PaymentStrategy
+   ↓
+Payment
+   ↓
+Free Spot
+
+
+//complete mental model
+  
+
+                      PARKING LOT
+                         │
+             ┌───────────┼───────────┐
+             ↓           ↓           ↓
+         STRUCTURE     SESSION     BUSINESS
+             │           │           │
+             ↓           ↓           ↓
+           Floor       Ticket      Pricing
+             │                       │
+             ↓                       ↓
+            Spot                  Payment
+             │
+             ↓
+       Bike/Car/Truck
+
+       

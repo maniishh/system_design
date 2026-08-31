@@ -1,0 +1,66 @@
+                         ┌──────────────┐
+                         │ ParkingLot   │
+                         └──────┬───────┘
+                                │
+                              1..*
+                                │
+                                ▼
+                         ┌──────────────┐
+                         │ ParkingFloor │
+                         └──────┬───────┘
+                                │
+                              1..*
+                                │
+                                ▼
+                         ┌──────────────┐
+                         │ ParkingSpot  │
+                         └──────┬───────┘
+                              ▲ │
+                    ┌─────────┼─┼─────────┐
+                    │         │ │         │
+                  BikeSpot CarSpot     TruckSpot
+
+
+       ┌──────────┐
+       │ Vehicle  │
+       └────┬─────┘
+            ▲
+       ┌────┼────┐
+      Bike Car  Truck
+
+
+       ┌──────────┐
+       │  Ticket  │
+       └────┬─────┘
+            │
+       Vehicle + Spot
+
+
+       ParkingLot ──────────> PricingStrategy
+                                  ▲
+                            ┌─────┼─────┐
+                         Normal Weekend Premium
+
+
+       ParkingLot ──────────> PaymentStrategy
+                                  ▲
+                            ┌─────┼─────┐
+                           Cash  Card  UPI
+
+
+
+
+
+
+
+
+ENTRY:
+Vehicle → ParkingLot → FindSpot → Park → Ticket
+
+
+EXIT:
+Ticket → FindSpot → Duration → Pricing
+                              ↓
+                           Payment
+                              ↓
+                         Free Spot
